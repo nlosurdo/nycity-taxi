@@ -1,4 +1,9 @@
 # Databricks notebook source
+# MAGIC %md
+# MAGIC # Data Ingestion - Delta Tables Pipeline
+
+# COMMAND ----------
+
 import dlt
 from pyspark.sql.functions import *
 

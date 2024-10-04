@@ -1,4 +1,9 @@
 # Databricks notebook source
+# MAGIC %md
+# MAGIC # Data Ingestion - Unzip source files
+
+# COMMAND ----------
+
 import zipfile
 import os
 from dotenv import load_dotenv

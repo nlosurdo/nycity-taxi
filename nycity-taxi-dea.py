@@ -43,3 +43,16 @@ print(pandas_df.head())
 # Create a pandas profiling report
 profile = ProfileReport(pandas_df, title="Pandas Profiling Report", explorative=True)
 profile.to_file("./results/taxi_trip_fare_profile.html")
+
+# COMMAND ----------
+
+# Convert the Spark DataFrame to a Pandas DataFrame
+taxi_common_data = spark.read.table('hive_metastore.nycity_taxi.taxi_common_data')
+
+# COMMAND ----------
+
+# Create a pandas profiling report
+pandas_df = taxi_common_data.toPandas()
+
+profile = ProfileReport(pandas_df, title="Pandas Profiling Report", explorative=True)
+profile.to_file("./results/taxi_common_data_profile.html")

@@ -163,3 +163,5 @@ cython_debug/
 
 sources/
 results/
+.sources/
+.results/

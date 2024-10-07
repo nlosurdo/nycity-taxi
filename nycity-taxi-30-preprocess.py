@@ -32,7 +32,10 @@ taxi_common_data = taxi_common_data.withColumn(
 taxi_common_data = taxi_common_data.withColumn(
     "pickup_day_of_week", F.dayofweek("pickup_datetime")
 )
-taxi_common_data = taxi_common_data.withColumn("pickup_hour", F.hour("pickup_datetime"))
+taxi_common_data = taxi_common_data.withColumn(
+    "pickup_hour", F.hour("pickup_datetime")
+)
+
 taxi_common_data = taxi_common_data.withColumn(
     "pickup_minute", F.minute("pickup_datetime")
 )
@@ -92,7 +95,6 @@ taxi_common_data_cl = cluster_coordinates(
 # COMMAND ----------
 
 display(taxi_common_data_cl.limit(10))
-display(taxi_common_data_cl.groupBy("pickup_clusters_m").count().orderBy("count"))
 
 # COMMAND ----------
 
@@ -134,84 +136,3 @@ fs.create_table(
     df=taxi_common_data_fs,
     description="NYC Taxi data with clustered pickup and dropoff locations",
 )
-
-# COMMAND ----------
-
-# Step 9: Write to Databricks GeoMap
-taxi_processed_data = spark.read.table("hive_metastore.nycity_taxi.taxi_processed_data")
-
-# Convert Spark DataFrame to Pandas DataFrame
-taxi_processed_data_pandas = (
-    taxi_processed_data.select(
-        "pickup_latitude", "pickup_longitude", "pickup_clusters_m"
-    )
-    .orderBy(rand())
-    .limit(20000)
-    .toPandas()
-)
-
-# Create a Folium map centered on the average pickup latitude and longitude
-mean_latitude = taxi_processed_data_pandas["pickup_latitude"].mean()
-mean_longitude = taxi_processed_data_pandas["pickup_longitude"].mean()
-
-map_clusters = folium.Map(location=[mean_latitude, mean_longitude], zoom_start=12)
-
-# Define a color palette for the clusters
-colors = [
-    "#FF6666",  # bright red
-    "#FF9966",  # bright orange
-    "#FFFF66",  # bright yellow
-    "#66FF66",  # bright green
-    "#66FFFF",  # bright cyan
-    "#6699FF",  # bright blue
-    "#9966FF",  # bright purple
-    "#FF66FF",  # bright magenta
-    "#FF33CC",  # vibrant pink
-    "#FFCC33",  # vibrant yellow-orange
-    "#FF9933",  # vibrant orange
-    "#66FFCC",  # bright aqua
-    "#33CC33",  # bright lime
-    "#66CCFF",  # bright sky blue
-    "#CC99FF",  # bright lavender
-    "#FF6699",  # bright coral pink
-    "#33CCCC",  # vibrant teal
-    "#99FF66",  # bright light green
-    "#FFCCCC",  # light salmon pink
-    "#CC66FF",  # vibrant purple
-]
-
-
-# Add points to the map for each cluster
-for idx, row in taxi_processed_data_pandas.iterrows():
-    cluster_index = int(row["pickup_clusters_m"]) % len(colors)
-    folium.CircleMarker(
-        location=(row["pickup_latitude"], row["pickup_longitude"]),
-        radius=1,
-        color=colors[cluster_index],
-        fill=True,
-        fill_color=colors[cluster_index],
-        fill_opacity=0.1,
-        tooltip=f"Cluster: {row['pickup_clusters_m']}",
-    ).add_to(map_clusters)
-
-# Show the map
-map_clusters
-
-# COMMAND ----------
-
-# Step 10: Pick up top 20 medium clusters and write DeltaTable
-top_clusters = taxi_processed_data.groupBy('pickup_clusters_m') \
-    .agg(F.count('*').alias('count')) \
-    .orderBy(F.desc('count')) \
-    .limit(20)
-
-taxi_top20_clusters = taxi_processed_data.join(
-    top_clusters, 
-    on='pickup_clusters_m', 
-    how='inner'
-)
-
-taxi_top20_clusters.write \
-    .mode("overwrite") \
-    .option("overwriteSchema", "true") \
-    .saveAsTable("hive_metastore.nycity_taxi.taxi_top20_clusters")

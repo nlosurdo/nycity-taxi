@@ -7,14 +7,6 @@
 import dlt
 from pyspark.sql.functions import *
 
-# TODO: Enable custom library install for dlt pipeline 
-# from dotenv import load_dotenv
-
-# # Load environment variables from .env file
-# load_dotenv()
-
-# # Define source paths for CSVs
-# source_folder = os.environ.get("SOURCE_FOLDER")
 source_folder = '/FileStore/sources/nycity-taxi/external_data'
 
 # Helper function to clean column names (remove invalid characters)
@@ -28,6 +20,7 @@ def clean_column_names(df):
     name="taxi_ext_weather_data",
     comment="Delta table for external weather data"
 )
+@dlt.incremental()
 def trip_fare():
     df = spark.read.option("header", "true").option("inferSchema", "true").csv(f"{source_folder}/weather_nyc_201304.csv")
 

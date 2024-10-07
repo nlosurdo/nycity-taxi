@@ -80,4 +80,5 @@ display(taxi_common_data.count())
 # Scrivere la tabella unita in formato Delta
 output_deltatable = "hive_metastore.nycity_taxi.taxi_common_data"
 
-taxi_common_data.write.format("delta").mode("overwrite").saveAsTable(output_deltatable)
+taxi_common_data.write.format(
+    "delta").mode("overwrite").saveAsTable(output_deltatable)

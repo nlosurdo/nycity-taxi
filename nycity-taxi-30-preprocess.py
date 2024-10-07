@@ -17,7 +17,7 @@ fs = FeatureStoreClient()
 
 # COMMAND ----------
 
-# Step 1: Read the input table
+# Read the input table
 taxi_common_data = spark.read.table("hive_metastore.nycity_taxi.taxi_common_data")
 
 # Step 2: Convert store_and_fwd_flag

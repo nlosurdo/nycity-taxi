@@ -336,7 +336,7 @@ client.transition_model_version_stage(
 ```
 
 -----
-### CI PIPELINE
+### CI Pipeline
 
 Il modello di deploy prevede che la pipeline venga triggerata automaticamente ad ogni **push** sul branch principale.  La pipeline CI esegue il linting e il testing del codice tramite Docker. 
 

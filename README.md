@@ -20,9 +20,9 @@ Per quanto riguarda il **catalogo**, il ragionamento è lo stesso: ogni progetto
 Nel File System, i file di origine sono organizzati ancora una volta per progetto, in modo simmetrico e con ugual nomenclatura alle altre aree. Per questo use case è stato creato il percorso `/FileStore/sources/nycity-taxi`.
 <br>
 <br>
-<img src="/Workspace/Projects/nycity-taxi/.imgs/workspace-structure.png" alt="workspace-structure" width="750px"/>
-<img src="/Workspace/Projects/nycity-taxi/.imgs/database-architecture.png" alt="database-architecture" width="250px"/>
-<img src="/Workspace/Projects/nycity-taxi/.imgs/DBFS-structure.png" alt="DBFS-structure" width="300px"/>
+<img src="./.imgs/workspace-structure.png" alt="workspace-structure" width="750px"/>
+<img src="./.imgs/database-architecture.png" alt="database-architecture" width="250px"/>
+<img src="./.imgs/DBFS-structure.png" alt="DBFS-structure" width="300px"/>
 <br>
 
 -----
@@ -30,7 +30,7 @@ Nel File System, i file di origine sono organizzati ancora una volta per progett
 ### DataBricks: Medallion architecture
 L'architettura del progetto adotta l'approccio a "**medaglie**" di Databricks (Bronze, Silver, Gold), una struttura a livelli per organizzare e gestire i dati in modo efficiente. In questo contesto, i dati grezzi vengono acquisiti nel livello Bronze, poi puliti e trasformati nel livello Silver, e infine arricchiti per l'uso nei modelli predittivi nel livello Gold.
 <br><br>
-<img src="/Workspace/Projects/nycity-taxi/.imgs/medallion-architecture.png" alt="medallion-architecture" width="400px"/>
+<img src="./.imgs/medallion-architecture.png" alt="medallion-architecture" width="400px"/>
 
 **Prima Pipeline - I Dati dei Taxi di NYC** <br>
 I job di Databricks sono sequenze di operazioni che permettono di eseguire processi di data engineering, machine learning o qualsiasi task di elaborazione dati in modo programmato e gestito. Ogni job può essere configurato per eseguire notebook, script o pipeline, schedulati secondo una cadenza prestabilita o attivati da eventi specifici.
@@ -49,7 +49,7 @@ Nel notebook `nycity-taxi-12-ingestion-common-delta-tbl`, i dati vengono filtrat
 **Gold:** Feature engineering e clustering <br>
 Il notebook `nycity-taxi-30-preprocess` arricchisce il dataset con variabili temporali e applica il clustering KMeans per definire i cluster geografici di pickup e dropoff.
 
-<img src="/Workspace/Projects/nycity-taxi/.imgs/data-ingestion-job.png" alt="data-ingestion-job" width="800px"/>
+<img src="./.imgs/data-ingestion-job.png" alt="data-ingestion-job" width="800px"/>
 
 Adesso vediamo nel dettaglio i passaggi operativi più importanti all'interno del job:
 
@@ -124,7 +124,7 @@ fs.create_table(
 **Seconda Pipeline - I Dati climatici Esterni** <br>
 Questa pipeline è dedicata all'acquisizione e all'integrazione di dati esterni e di terze parti. Per questo use case, ho scaricato i dati metereologici di New York relativi ad aprile 2013, con granularità oraria, dal servizio [visualcrossing](https://www.visualcrossing.com/weather/weather-data-services) 
 
-<img src="/Workspace/Projects/nycity-taxi/.imgs/data-ingestion-ext-job.png" alt="data-ingestion-ext-job" width="500px"/>
+<img src="./.imgs/data-ingestion-ext-job.png" alt="data-ingestion-ext-job" width="500px"/>
 
 
 **Bronze** <br>
@@ -172,7 +172,7 @@ Oltre alle dashboard embeddate nei notebook, ho creato quattro main dashboard, u
 
 E' possibile consultare i risultati, gli insights ed i contenuti delle analisi effettuate, nella presentazione .pdf allegata a questo git repo.
 <br><br>
-<img src="/Workspace/Projects/nycity-taxi/.imgs/dashboards.png" alt="dashboards" width="800px"/>
+<img src="./.imgs/dashboards.png" alt="dashboards" width="800px"/>
 
 -----
 
@@ -180,7 +180,7 @@ E' possibile consultare i risultati, gli insights ed i contenuti delle analisi e
 
 MLflow è stato utilizzato per gestire il ciclo di vita dei modelli di machine learning, garantendo il tracciamento degli esperimenti, la riproducibilità e il deploy
 
-<img src="/Workspace/Projects/nycity-taxi/.imgs/mlflow-pipeline.png" alt="mlflow-pipeline" width="500px"/>
+<img src="./.imgs/mlflow-pipeline.png" alt="mlflow-pipeline" width="500px"/>
 
 Nel progetto sono stati realizzati **tre esperimenti distinti**.
 

@@ -1,0 +1,10 @@
+databricks-feature-engineering==0.2.0
+databricks-feature-store==0.17.0
+folium==0.17.0
+geopandas==1.0.1
+python-dotenv==0.21.0
+shap==0.46.0
+xgboost==2.1.1
+ydata-profiling==4.8.3
+flake8==6.1.0
+pytest==7.4.2
